@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core'
+import { Component, OnInit, signal } from '@angular/core'
 import { fromEvent, map } from 'rxjs'
 
 @Component({
@@ -7,13 +7,13 @@ import { fromEvent, map } from 'rxjs'
   styleUrl: './app.component.scss'
 })
 export class AppComponent implements OnInit {
-  eventMessage = ''
+  eventMessage = signal('')
 
   ngOnInit(): void {
     fromEvent<MouseEvent>(document, 'click')
       .pipe(
         map(event => `x: ${event.clientX}, y: ${event.clientY}`)
       )
-      .subscribe({ next: data => this.eventMessage = data })
+      .subscribe({ next: data => this.eventMessage.set(data) })
   }
 }
