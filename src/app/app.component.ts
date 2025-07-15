@@ -1,5 +1,5 @@
 import { Component, OnInit, signal } from '@angular/core'
-import { fromEvent, map } from 'rxjs'
+import { filter, fromEvent, map } from 'rxjs'
 
 @Component({
   selector: 'app-root',
@@ -12,6 +12,7 @@ export class AppComponent implements OnInit {
   ngOnInit(): void {
     fromEvent<MouseEvent>(document, 'click')
       .pipe(
+        filter(event => event.clientX <= 100 && event.clientY <= 100),
         map(event => `x: ${event.clientX}, y: ${event.clientY}`)
       )
       .subscribe({ next: data => this.eventMessage.set(data) })
